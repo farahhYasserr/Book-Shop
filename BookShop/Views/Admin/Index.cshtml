@@ -1,0 +1,134 @@
+﻿@model BookShop.ViewModels.VmAdminManageBooks
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/Content/css/bootstrap.css">
+    <style>
+        body {
+            background-color: #FDF7E4;
+        }
+    </style>
+</head>
+<body>
+
+
+    <script src="~/Content/js/cdnjs.cloudflare.com_ajax_libs_popper.js_1.11.0_umd_popper.min.js"></script>
+    <script src="~/Content/js/code.jquery.com_jquery-3.7.1.min.js"></script>
+    <script src="~/Content/js/bootstrap.js"></script>
+    <!-- Navbar -->
+    <nav class=" nav navbar navbar-expand-lg navbar-light   " style="background-color: #fceec2;">
+        <!-- Container wrapper -->
+        <div class="container">
+            <!-- Navbar brand -->
+            <a class="navbar-brand" href="#"> <img src="~/Content/images/logo.png" alt="Bootstrap" width="200" height="30"></a>
+
+
+            <!-- Toggle button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Collapsible wrapper -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!-- Left links -->
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0  ">
+                    <li class="nav-item" style="padding-top:8px ; padding-left:17px ;">
+                        <a class="nav-link active d-flex flex-column me-3 " aria-current="page" href="#"><span class="large " style="color: #CB8C2F;">Manage Books</span></a>
+                    </li>
+
+                    <li class="nav-item" style="padding-top:8px ; padding-left:17px ;">
+                        <a class="nav-link active d-flex flex-column me-3 " aria-current="page" href="#"><span class="large " style="color: #CB8C2F;">Orders</span></a>
+                    </li>
+
+                </ul>
+                <!-- Left links -->
+            </div>
+            <!-- Collapsible wrapper -->
+        </div>
+        <!-- Container wrapper -->
+    </nav>
+
+    <div class="container container " style="margin-top:20px; width:70%;  box-shadow: black; background-color:#fceec2;">
+        <div class="shadow card-body p-4 p-lg-5   ">
+            <!--Add Category-->
+            @using (Html.BeginForm("AddCategory", "Admin", FormMethod.Post))
+            {
+                @Html.HiddenFor(model => model.categories)
+
+                <div class="col-8">
+                    <h5 class="form-label" for="form2Example17">CATEGORY</h5>
+                    @Html.TextBoxFor(model => model.categoryToBeAdded, "", new { @class = "form-control form-control-lg" })
+                    @Html.ValidationMessageFor(model => model.categoryToBeAdded, "", new { style = "color:red" })
+                </div>
+                <div class="col-4">
+                    <button type="submit" class="btn  " style="margin-top:35px; background-color: #CB8C2F; ">ADD CATEGORY</button>
+                </div>
+            }
+        </div>
+   
+    </div>
+    <!--Add Category-->
+    <!--List group Category-->
+    <div class="container container " style="margin-top:20px; width:70%;  box-shadow: black; background-color:#fceec2;">
+        <div class="shadow card-body p-4 p-lg-5   ">
+            <ul class="list-group">
+                <!--one item-->
+                @foreach (var category in Model.categories)
+                {
+                <div class="row">
+                    <div class="col">
+                        <li class="dropdown-item btn text-start dropdown-toggle  btn-lg"
+                            style="background-color:#FDF7E4;" data-bs-toggle="collapse" href="#x_@category.id" aria-current="true">
+                            @category.name
+                        </li>
+                     </div>
+
+                        <div class="col-auto ">
+                            <button type="submit" class="btn btn-sm" style=" background-color: #CB8C2F;">@Html.ActionLink("Add Book", "AddBook", "Admin", new { id = category.id }, new { style = "color: white;text-decoration: none;" })</button>
+                            <button type="button" class="btn btn-sm btn-danger">@Html.ActionLink("Delete", "DeleteCategory", "Admin", new { id = category.id }, new { style = "color: white;text-decoration: none;" })</button>
+                        </div>
+               </div>
+
+                <!--Book items-->
+                   
+                <div class="collapse" id="x_@category.id">
+                    <ul class="list-group  " style="margin-top: 10px;">
+                        <!--Item1-->
+                        @foreach(var book in category.books) { 
+                        <li class="list-group-item   " style=" background-color:#fceec2; ">
+                            <div class="row">
+                                <div class="col-auto">
+                                    <img src="~/Content/images/@book.image" width="110px" height="150px" alt="">
+                                </div>
+                                <h5 class="col">@book.name</h5>
+                                <div class="col-auto ">
+                                    <button type="submit" class="btn btn-sm" style=" background-color: #CB8C2F;">
+                                        @Html.ActionLink("Edit book", "EditBook", "Admin", new { bookId = book.id},new { style = "color: white;text-decoration: none;" })
+                                    </button>
+                                    <button type="submit" class="btn btn-sm btn-danger">@Html.ActionLink("Delete", "DeleteBook", "Admin", new { id = book.id }, new { style = "color: white;text-decoration: none;" })</button>
+                                </div>
+                            </div>
+
+                        </li>
+                       }
+                    </ul>
+                </div>
+                }    <!--Book items-->
+           </ul>
+        </div>
+    </div>
+    <!--List group Category-->
+    <!-- Footer -->
+    <footer class="bg-body-tertiary fixed-bottom text-center text-lg-start" style="padding-top: 12px;">
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+            © 2023 Copyright:
+            <a class="text-body" href="#">BOOK STORE.com</a>
+        </div>
+        <!-- Copyright -->
+    </footer>
+</body>
+</html>

@@ -1,0 +1,207 @@
+﻿@model BookShop.ViewModels.VmHome
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/Content/css/bootstrap.css">
+    <style>
+        body {
+            background-color: #FDF7E4;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <nav class="nav navbar navbar-expand-lg navbar-light" style="background-color:#fceec2;">
+        <!-- Container wrapper -->
+        <div class="container">
+            <!-- Navbar brand -->
+            <a class="navbar-brand" href="#"> <img src="~/Content/images/logo.png" alt="Bootstrap" width="200" height="30"></a>
+
+
+            <!-- Toggle button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Collapsible wrapper -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!-- Left links -->
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0  ">
+                    @*<li class="nav-item" style="padding-top:8px ; padding-left:17px ;">
+            <a class="nav-link active d-flex flex-column me-3 " aria-current="page" href="#">
+                <span class="large "
+                      style="color: #CB8C2F;">Home</span>
+            </a>
+
+        </li>*@
+                    <li class="nav-item" style="padding-top:8px;padding-left:17px;color:#CB8C2F;">
+                        @Html.ActionLink("Home", "Index", "Home", new { id = Model.user.id, username = Model.user.username, address = Model.user.address, phone = Model.user.phone }, new { @class = "nav-link" })
+                    </li>
+
+
+                    <li class="nav-item" style="padding-top:10px ; padding-left:17px ;">
+                        <a class=" flex-column me-3" href="@Url.Action("ShoppingCart", "Home", new { id = Model.user.id, username = Model.user.username, address = Model.user.address, phone = Model.user.phone })">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#CB8C2F" class="bi bi-basket3-fill" viewBox="0 0 16 16">
+                                <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 .5 6h1.717L5.07 1.243a.5.5 0 0 1 .686-.172zM2.468 15.426.943 9h14.114l-1.525 6.426a.75.75 0 0 1-.729.574H3.197a.75.75 0 0 1-.73-.574z" />
+                            </svg>
+
+                        </a>
+                    </li>
+                    <span style="position: absolute; margin-left:105px; background-color: red; width: 20px; height: 21px; border-radius: 50%; color: white; text-align: center; margin-top: 14px; z-index: 1;">@Model.cartQty</span>
+
+                    <li class="nav-item dropdown">
+                        <a class="btn dropdown-toggle flex-column" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="~/Content/images/user-solid.svg" class="rounded-circle" height="30" alt="" />
+                            @Model.user.username
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li>
+                                @Html.ActionLink("Orders", "Orders", "Home", new { area = "" }, new { @class = "dropdown-item" })
+                            </li>
+                            <li>
+                                @Html.ActionLink("Log out", "SignUp", "Home", new { area = "" }, new { @class = "dropdown-item" })
+
+                            </li>
+                        </ul>
+                    </li>
+
+
+                </ul>
+                <!-- Left links -->
+            </div>
+            <!-- Collapsible wrapper -->
+        </div>
+        <!-- Container wrapper -->
+    </nav>
+
+    <!-- Navbar -->
+
+    <div class="container m-1  ">
+
+
+        <div class="row">
+
+            <div class="col-2">
+
+
+                @using (Html.BeginForm("FilterItems", "Home", FormMethod.Post))
+                {
+                    @Html.HiddenFor(model => model.user.id)
+
+                    <div class=" shadow list-group " style="padding-top: 5px;">
+                        <a data-bs-toggle="collapse" href="#category" class="list-group-item list-group-item-action  "
+                           style="background-color: #CB8C2F;" aria-current="true">Category </a>
+                        <div class="collapse" id="category">
+                            @foreach (var category in Model.categories)
+                            {
+                                @*if (Model.categoryId == category.id)
+                                    {
+                                        <label class="list-group-item list-group-item-action">
+                                            <input type="radio" name="categoryId" value="@category.id" checked>  @category.name
+                                        </label>
+                                    }
+                                    else
+                                    { <label class="list-group-item list-group-item-action">
+                                            <input type="radio" name="categoryId" value="@category.id">  @category.name
+                                        </label>
+                                    }*@
+                                <label class="list-group-item list-group-item-action">
+                                    <input type="radio" name="categoryId" value="@category.id">  @category.name
+                                </label>
+                                @*<label class="list-group-item list-group-item-action">
+                                        @Html.RadioButtonFor(model => model.categoryId, category.id)
+                                        @category.name
+                                    </label>*@
+                            }
+                        </div>
+                    </div>
+
+
+                    <div class=" shadow list-group " style="padding-top: 5px;">
+                        @if (Model.isPopularityChecked)
+                        {
+                            <span data-bs-toggle="collapse" class="list-group-item"
+                                  style="background-color: #CB8C2F;" aria-current="true"><input type="checkbox" name="isPopularityChecked" value=true checked> Sort by Popularity</span>
+                        }
+                        else
+                        {
+                            <span data-bs-toggle="collapse" class="list-group-item"
+                                  style="background-color: #CB8C2F;" aria-current="true"><input type="checkbox" name="isPopularityChecked" value=true> Sort by Popularity</span>
+                        }
+                    </div>
+
+                    <button class="btn btn-danger" type="submit">
+                        Apply Filters
+                        @*@Html.ActionLink("Apply Filters", "FilterItems", "Home", new { style = "color: white;text-decoration: none;" })*@
+                    </button>
+                }
+
+            </div>
+
+            <div class="col-10">
+                <div class="container" style="margin-top: 12px;">
+
+                    <div class="row pb-5 mb-4">
+
+
+                        @foreach (var book in Model.books)
+                        {
+                            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                                <a style="text-decoration: none;" href="@Url.Action("BookDetails", "Home", new { bookId = book.id,userId=Model.user.id })">
+                                    <div class=" shadow card rounded shadow-sm border-0">
+                                        <div class="card-body p-4">
+                                            <img src="~/Content/images/@book.image" alt=""
+                                                 class="img-fluid d-block mx-auto mb-3">
+                                            <h5 class="text-dark">@book.name</h5>
+                                            <p class="small text-muted font-italic">@book.authorName</p>
+                                            <span class="small text-muted font-italic  text-dark " style="font-weight: bold;">@book.price EGP </span>
+                                            <br />
+                                            <span class="small text-muted font-italic  text-dark " style="font-weight:bold;">@book.popularity/10</span>
+                                            @if (book.status.ToLower() == "in stock")
+                                            {<h6 class="text" style="background-color: #008000;color:white; border-radius: 0px 10px; text-align:center">@book.status</h6>
+                                            }
+                                            else
+                                            {
+                                        <h6 class="text" style="background-color: #FFC72C; color: white; border-radius: 0px 10px; text-align: center ">@book.status</h6>
+                                            }
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        }
+
+
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <footer class="bg-body-tertiary text-center text-lg-start" style="padding-top: 12px;">
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+            © 2023 Copyright:
+            <a class="text-body" href="#">BOOK STORE.com</a>
+        </div>
+        <!-- Copyright -->
+    </footer>
+    <script src="~/Content/js/cdnjs.cloudflare.com_ajax_libs_popper.js_1.11.0_umd_popper.min.js"></script>
+    <script src="~/Content/js/code.jquery.com_jquery-3.7.1.min.js"></script>
+    <script src="~/Content/js/bootstrap.js"></script>
+
+
+</body>
+
+</html>

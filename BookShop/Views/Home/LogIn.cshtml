@@ -1,0 +1,122 @@
+﻿@model BookShop.Models.User
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/Content/css/bootstrap.css">
+    <style>
+        body {
+            background-color: #FDF7E4;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <script src="~/Content/js/cdnjs.cloudflare.com_ajax_libs_popper.js_1.11.0_umd_popper.min.js"></script>
+    <script src="~/Content/js/code.jquery.com_jquery-3.7.1.min.js"></script>
+    <script src="~/Content/js/bootstrap.js"></script>
+
+    <nav class=" nav navbar navbar-expand-lg navbar-light   " style="background-color: #fceec2;">
+        <!-- Container wrapper -->
+        <div class="container">
+            <!-- Navbar brand -->
+            <a class="navbar-brand" href="#"> <img src="~/Content/images/logo.png" alt="Bootstrap" width="200" height="30"></a>
+
+
+            <!-- Toggle button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Collapsible wrapper -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            </div>
+            <!-- Collapsible wrapper -->
+        </div>
+        <!-- Container wrapper -->
+    </nav>
+
+
+    <div class="container" style="padding-top: 12px;">
+
+        <section class="vh-100" style="background-color: #DED0B6">
+            <div class="container py-5 h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col col-xl-10">
+                        <div class="card" style="border-radius: 1rem;">
+                            <div class="row g-0">
+                                <div class="col-md-6 col-lg-5 d-none d-md-block">
+                                    <img src="~/Content/images/login.jpg"
+                                         alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem; height: auto;" />
+                                </div>
+                                <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                                    <div class="card-body p-4 p-lg-5 text-black">
+
+                                        @using (Html.BeginForm("LogInProcess", "Home", FormMethod.Get))
+                                        {
+                                            @Html.HiddenFor(model => model.id)
+
+                                            <div class="d-flex align-items-center mb-3 pb-1">
+                                                <i class="fas fa-cubes fa-2x me-3"></i>
+                                                <img src="~/Content/images/logo.png"
+                                                     alt="login form" class="img-fluid=" style=" width: 200px; " />
+                                            </div>
+
+                                            <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
+
+                                            <div class="form-outline mb-4">
+                                                <label class="form-label" for="form2Example17">Username</label>
+                                                @Html.TextBoxFor(model => model.username, "", new { @class = "form-control form-control-lg" })
+                                                @Html.ValidationMessageFor(model => model.username, "", new { style = "color:red" })
+                                            </div>
+
+                                            <div class="form-outline mb-4">
+                                                <label class="form-label" for="form2Example27">Password</label>
+                                                @Html.PasswordFor(model => model.password, new { @class = "form-control form-control-lg" })
+                                                @Html.ValidationMessageFor(model => model.password, "", new { style = "color:red" })
+                                            </div>
+
+                                            <div class="pt-1 mb-4">
+                                                <button class="btn  btn-lg btn-block" style="background-color: #CB8C2F;" type="submit">Login</button>
+                                            </div>
+
+                                            <a class="small text-muted" href="#!">Forgot password?</a>
+                                            <p class="mb-5 pb-lg-2" style="color: #393f81;">
+                                                Don't have an account? @Html.ActionLink("Register here", "SignUp", "Home", new { area = "" }, new { style = "color: #393f81; font-weight: bold;" })
+                                            </p>
+                                        }
+
+
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+
+
+
+    <!-- Footer -->
+    <footer class="bg-body-tertiary text-center text-lg-start" style="padding-top: 12px;">
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+            © 2023 Copyright:
+            <a class="text-body" href="#">BOOK STORE.com</a>
+        </div>
+        <!-- Copyright -->
+    </footer>
+
+
+</body>
+</html>

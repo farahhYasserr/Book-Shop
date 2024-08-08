@@ -1,0 +1,203 @@
+﻿@using BookShop.Models 
+@model BookShop.ViewModels.VmCart
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/Content/css/bootstrap.css">
+    <style>
+        body {
+            background-color: #FDF7E4;
+        }
+    </style>
+</head>
+<body>
+
+
+    <script src="~/Content/js/cdnjs.cloudflare.com_ajax_libs_popper.js_1.11.0_umd_popper.min.js"></script>
+    <script src="~/Content/js/code.jquery.com_jquery-3.7.1.min.js"></script>
+    <script src="~/Content/js/bootstrap.js"></script>
+    <!-- Navbar -->
+    <nav class=" nav navbar navbar-expand-lg navbar-light   " style="background-color: #fceec2;">
+        <!-- Container wrapper -->
+        <div class="container">
+            <!-- Navbar brand -->
+            <a class="navbar-brand" href="#"> <img src="~/Content/images/logo.png" alt="Bootstrap" width="200" height="30"></a>
+
+
+            <!-- Toggle button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Collapsible wrapper -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!-- Left links -->
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0  ">
+                    <li class="nav-item" style="padding-top:8px ; padding-left:17px ;">
+                        @Html.ActionLink("Home", "Index", "Home", new { id = Model.user.id, username = Model.user.username, address = Model.user.address, phone = Model.user.phone }, new { @class = "nav-link" })
+                    </li>
+
+                    <li class="nav-item" style="padding-top:10px ; padding-left:17px ;">
+                        <a class=" flex-column me-3" href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#CB8C2F" class="bi bi-basket3-fill" viewBox="0 0 16 16">
+                                <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 .5 6h1.717L5.07 1.243a.5.5 0 0 1 .686-.172zM2.468 15.426.943 9h14.114l-1.525 6.426a.75.75 0 0 1-.729.574H3.197a.75.75 0 0 1-.73-.574z" />
+                            </svg>
+
+                        </a>
+
+                    </li>
+                    <span style="position: absolute; margin-left:105px; background-color: red; width: 20px; height: 21px; border-radius: 50%; color: white; text-align: center; margin-top: 14px; z-index: 1;">@Model.cart.GetQuantity()</span>
+
+                    <li class="nav-item dropdown">
+                        <a class="btn dropdown-toggle flex-column" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="~/Content/images/user-solid.svg" class="rounded-circle" height="30" alt="" />
+                            @Model.user.username
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li>
+                                @Html.ActionLink("Orders", "Orders", "Home", new { area = "" }, new { @class = "dropdown-item" })
+                            </li>
+                            <li>
+                                @Html.ActionLink("Log out", "SignUp", "Home", new { area = "" }, new { @class = "dropdown-item" })
+
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <!-- Left links -->
+            </div>
+            <!-- Collapsible wrapper -->
+        </div>
+        <!-- Container wrapper -->
+    </nav>
+    <!-- Navbar -->
+
+
+
+
+    <section class="h-100 h-custom">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12">
+                    <div class="card card-registration card-registration-2" style="border-radius: 15px;  background-color: #fceec2;">
+                        <div class="card-body p-0">
+                            <div class="row g-0">
+                                <div class="col-lg-12">
+                                    <div class="p-5">
+                                        <div class="d-flex justify-content-between align-items-center mb-5">
+                                            <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
+                                            <h6 class="mb-0 text-muted">@Model.cart.GetQuantity() items</h6>
+                                        </div>
+                                        <!--single row-->
+                                        <hr class="my-4">
+                                        @{
+                                            ApplicationDbContext _context = new ApplicationDbContext();
+                                            Book book;
+                                        }
+
+
+                                            @foreach (var bookId in Model.cart.books.Keys)
+                                            {
+                                                book = _context.Books.FirstOrDefault(b => b.id == bookId);
+                                                <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                                    <div class="col-md-2 col-lg-2 col-xl-2">
+                                                        <img src="~/Content/images/@book.image"
+                                                             class="img-fluid rounded-3" alt="Cotton T-shirt">
+                                                    </div>
+                                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                                        <h6 class="text-black mb-0">@book.name</h6>
+                                                        <h6 class="text-muted">@book.authorName</h6>
+                                                    </div>
+                                                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+
+
+                                                        @Html.TextBoxFor(model => model.cart.books[bookId], new {type = "number", min = "1", step = "1", @class = "form-control form-control-sm" })
+                                                        @*<button type="submit" class="btn btn-primary">
+                                                            @Html.ActionLink("Update", "EditBooksFromCart", "Home", new { userId = Model.user.id,bookId =bookId, qty=Model.cart.books[bookId] }, new { style = "color: white;text-decoration: none;" })
+
+                                                        </button>*@
+
+                                                    </div>
+
+                                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                                        <h6 class="mb-0">@book.price EGP</h6>
+                                                    </div>
+                                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                                        <a href="@Url.Action("DeleteBookFromCart", "Home", new { bookId = book.id, userId = Model.user.id })" class="text-muted">
+                                                            <img src="~/Content/images/x-circle.svg" alt="" style="width: 30px; height: 30px;">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <!--single row-->
+                                                <hr class="my-4">
+                                            }
+                                        
+
+                                            <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    <h6 class="text-muted">Total</h6>
+                                                </div>
+                                                <div class="col-4">
+                                                    <h6 class="text-muted" style="padding-left:65px">@Model.cart.GetTotal() EGP</h6>
+                                                </div>
+                                            </div>
+
+
+                                            <hr class="my-4">
+
+
+
+                                            <div class="d-flex justify-content-between">
+                                                <button type="button" class="btn btn-dark btn-block btn-lg"
+                                                        data-mdb-ripple-color="dark">
+                                                    @Html.ActionLink("BACK TO SHOPPING", "Index", "Home", new { id = Model.user.id, username = Model.user.username, address = Model.user.address, phone = Model.user.phone }, new { style = "color: white;text-decoration: none;" })
+                                                </button>
+
+                                                <button type="submit" class="btn btn-dark btn-block btn-lg "
+                                                        data-mdb-ripple-color="dark">
+                                                    CHECKOUT
+                                                </button>
+                                            </div>
+
+                                        
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+    <!-- Footer -->
+    <footer class="bg-body-tertiary text-center text-lg-start" style="padding-top: 12px;">
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+            © 2023 Copyright:
+            <a class="text-body" href="#">BOOK STORE.com</a>
+        </div>
+        <!-- Copyright -->
+    </footer>
+
+
+</body>
+    <script>
+        $(document).ready(function () {
+            $('#qty').on('input', function () {
+                var value = $(this).val();
+                var bookId = $('#bookId').val();
+                
+            });
+        });
+    </script>
+
+</html>
